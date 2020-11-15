@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import WebKit
 
 class LocalWeatherViewController: UIViewController {
 
@@ -20,7 +19,7 @@ class LocalWeatherViewController: UIViewController {
     
     @IBOutlet var forecastTableView: UITableView!
     
-    @IBOutlet var iconWeatherImage: UIImageView!
+    @IBOutlet var iconConditionView: UIView!
     
     // MARK: - Properties
     var weather: Weather!
@@ -35,7 +34,7 @@ class LocalWeatherViewController: UIViewController {
             opacity: 0.2
         )
 
-        WeatherRequest.fetchData { [weak self] weather in
+        NetworkManager.fetchWeatherData { [weak self] weather in
             
             guard let `self` = self else { return }
 
@@ -71,19 +70,16 @@ class LocalWeatherViewController: UIViewController {
             ? "\(fact.windSpeed) м/с"
             : "\(fact.windSpeed) м/с, \(fact.windDirection.inRussian)"
         airPressureLabel.text = "\(fact.pressureMm) мм рт. ст."
-        humidityLabel.text = "\(fact.humidity)%"        
-        
-//        let stringURL = "https://yastatic.net/weather/i/icons/blueye/color/svg/\(fact.icon).svg"
-//        DispatchQueue.global().async {
-//            guard let imageURL = URL(string: stringURL) else { return }
-//            guard let imageData = try? Data(contentsOf: imageURL) else { return }
-//
-//            DispatchQueue.main.async {
-//                let urlRequest = URLRequest(url: imageURL)
-//                self.iconWebView.load(urlRequest)
-//                self.iconWeatherImage.image = UIImage(data: imageData)
-//            }
-//        }
+        humidityLabel.text = "\(fact.humidity)%"
+
+        NetworkManager.fetchConditionImage(fact.icon,
+                                           toSize: iconConditionView.bounds) {
+            [weak self] image in
+            
+            guard let `self` = self else { return }
+
+            self.iconConditionView.addSubview(image)
+        }
     }
 }
 

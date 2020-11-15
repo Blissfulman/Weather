@@ -5,15 +5,15 @@
 //  Created by User on 14.11.2020.
 //
 
-import Foundation
+import UIKit
 
-struct WeatherRequest {
+struct NetworkManager {
     
     static let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
     
-    static func fetchData(latitude: String = "",
-                          longitude: String = "",
-                          completionHandler: @escaping (Weather) -> Void) {
+    static func fetchWeatherData(latitude: String = "",
+                                 longitude: String = "",
+                                 completionHandler: @escaping (Weather) -> Void) {
         
         let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
         let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
@@ -52,5 +52,19 @@ struct WeatherRequest {
             }
             
         }.resume()
+    }
+    
+    static func fetchConditionImage(
+        _ icon: String,
+        toSize size: CGRect,
+        completionHandler: @escaping (UIView) -> Void
+    ) {
+        
+        let stringImageURL = "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg"
+        guard let imageURL = URL(string: stringImageURL) else { return }
+        let conditionImage = UIView(SVGURL: imageURL) { image in
+            image.resizeToFit(size)
+        }
+        completionHandler(conditionImage)
     }
 }

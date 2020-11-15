@@ -15,6 +15,8 @@ class ForecastTableViewCell: UITableViewCell {
     @IBOutlet var dayTemperatureLabel: UILabel!
     @IBOutlet var nightTemperatureLabel: UILabel!
 
+    @IBOutlet var iconConditionView: UIView!
+    
     // MARK: - Setup UI
     func configure(for forecast: Forecast) {
         let date = getDateFromString(forecast.date)
@@ -23,6 +25,15 @@ class ForecastTableViewCell: UITableViewCell {
         weekdayLabel.textColor = isWeekend(date) ? .orange : .black
         dayTemperatureLabel.text = "\(forecast.parts.dayShort.temp.withSign())°"
         nightTemperatureLabel.text = "\(forecast.parts.nightShort.temp.withSign())°"
+        
+        NetworkManager.fetchConditionImage(forecast.parts.dayShort.icon,
+                                           toSize: iconConditionView.bounds) {
+            [weak self] image in
+            
+            guard let `self` = self else { return }
+
+            self.iconConditionView.addSubview(image)
+        }
     }
     
     // MARK: - Private methods

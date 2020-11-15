@@ -13,7 +13,7 @@ class WorldWeatherViewController: UITableViewController {
     // MARK: - Properties
     var weatherInCities = [Weather]()
     let cityNames = ["Санкт-Петербург", "Сочи", "Владивосток", "Париж",
-                     "Лондон", "Милан", "Барселона", "Торонто"]
+                     "Лондон", "Милан", "Лиссабон", "Торонто", "Мурманск"]
     
     // MARK: - Lifecucle methods
     override func viewDidLoad() {
@@ -56,7 +56,7 @@ class WorldWeatherViewController: UITableViewController {
             
             guard let coordinates = coordinates else { return }
             
-            WeatherRequest.fetchData(
+            NetworkManager.fetchWeatherData(
                 latitude: String(coordinates.latitude),
                 longitude: String(coordinates.longitude)) {
                 (weather) in

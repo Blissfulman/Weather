@@ -9,16 +9,12 @@ import Foundation
 
 // MARK: - Weather
 struct Weather: Decodable {
-//    let now: Int
-//    let nowDt: String
     let info: Info
     let geoObject: GeoObject
     let fact: Fact
     let forecasts: [Forecast]
 
     enum CodingKeys: String, CodingKey {
-//        case now
-//        case nowDt = "now_dt"
         case info
         case geoObject = "geo_object"
         case fact
