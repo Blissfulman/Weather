@@ -24,32 +24,15 @@ class WorldWeatherViewController: UITableViewController {
             opacity: 0.2
         )
         
-        for cityName in cityNames {
-            getCityCoordinates(for: cityName) {
-                [weak self] (coordinates, error) in
-                
-                guard let `self` = self else { return }
-
-                guard let coordinates = coordinates else { return }
-                
-                WeatherRequest.fetchData(
-                    latitude: String(coordinates.latitude),
-                    longitude: String(coordinates.longitude)) {
-                    (weather) in
-                    
-                    self.weatherInCities.append(weather)
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-        }
+        cityNames.forEach { addCity($0) }
     }
     
     // MARK: - Actions
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        
+        addCityAlert { [weak self] sityName in
+            guard let `self` = self else { return }
+            self.addCity(sityName)
+        }
     }
     
     // MARK: - Navigation
@@ -65,11 +48,25 @@ class WorldWeatherViewController: UITableViewController {
     }
 
     // MARK: - Private methods
-    private func getCityCoordinates(
-        for city: String, completionHandler: @escaping (_ coordinates: CLLocationCoordinate2D?, _ error: Error?) -> Void
-    ) {
-        CLGeocoder().geocodeAddressString(city) { (placemark, error) in
-            completionHandler(placemark?.first?.location?.coordinate, error)
+    private func addCity(_ cityName: String) {
+        getCityCoordinates(for: cityName) {
+            [weak self] (coordinates, error) in
+            
+            guard let `self` = self else { return }
+            
+            guard let coordinates = coordinates else { return }
+            
+            WeatherRequest.fetchData(
+                latitude: String(coordinates.latitude),
+                longitude: String(coordinates.longitude)) {
+                (weather) in
+                
+                self.weatherInCities.append(weather)
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
         }
     }
 }
@@ -105,5 +102,42 @@ extension WorldWeatherViewController {
 extension WorldWeatherViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "toWebView", sender: nil)
+    }
+}
+
+extension WorldWeatherViewController {
+    
+    private func addCityAlert(completionHandler: @escaping (String) -> Void) {
+        
+        let alertController = UIAlertController(title: "Добавление города", message: "Введите название города, который необходимо добавить", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ок", style: .default) { (action) in
+            let alertTextField = alertController.textFields?.first
+            guard let text = alertTextField?.text else { return }
+            completionHandler(text)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Город"
+        }
+        
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension WorldWeatherViewController {
+    
+    private func getCityCoordinates(
+        for city: String,
+        completionHandler: @escaping (_ coordinates: CLLocationCoordinate2D?,
+                                      _ error: Error?) -> Void
+    ) {
+        CLGeocoder().geocodeAddressString(city) { (placemark, error) in
+            completionHandler(placemark?.first?.location?.coordinate, error)
+        }
     }
 }
