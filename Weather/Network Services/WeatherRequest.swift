@@ -10,6 +10,7 @@ import Foundation
 struct WeatherRequest {
     
     static let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
+    static let numberOfDays = 3
     
     static func fetchData(completionHandler: @escaping (Weather) -> Void) {
         
@@ -17,7 +18,7 @@ struct WeatherRequest {
         
         let defaultHeaders = ["X-Yandex-API-Key" : apiKey,
                               "lang" : "ru_RU",
-                              "limit" : "1",
+                              "limit" : "1",//\(numberOfDays)",
                               "hours" : "false",
                               "extra" : "false"]
         
@@ -38,6 +39,10 @@ struct WeatherRequest {
             }
             
             guard let data = data else { return }
+            
+//            if let string = String(data: data, encoding: .utf8) {
+//                print(string)
+//            }
             
             do {
                 let weather = try JSONDecoder().decode(Weather.self, from: data)

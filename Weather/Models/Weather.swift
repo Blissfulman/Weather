@@ -11,21 +11,27 @@ import Foundation
 struct Weather: Decodable {
     let now: Int
     let nowDt: String
-//    let info: Info
+    let info: Info
     let geoObject: GeoObject
-//    let yesterday: Yesterday
     let fact: Fact
-//    let forecasts: [Forecast]
+    let forecasts: [Forecast]
 
     enum CodingKeys: String, CodingKey {
         case now
         case nowDt = "now_dt"
-//        case info
+        case info
         case geoObject = "geo_object"
-//        case yesterday
         case fact
-//        case forecasts
+        case forecasts
     }
+}
+
+// MARK: - Info
+struct Info: Decodable {
+    let n: Bool
+    let geoid: Int
+    let url: String
+    let lat, lon: Double
 }
 
 // MARK: - Fact
@@ -36,7 +42,7 @@ struct Fact: Decodable {
     let condition: Condition
     let isThunder: Bool?
     let windSpeed: Double
-    let windDirection: WindDir
+    let windDirection: WindDirection
     let pressureMm: Int
     let humidity: Int
 //    let daytime: Daytime?
@@ -104,8 +110,8 @@ enum Condition: String, Decodable {
     }
 }
 
-// MARK: - WindDir
-enum WindDir: String, Decodable {
+// MARK: - WindDirection
+enum WindDirection: String, Decodable {
     case nw
     case n
     case ne
@@ -143,4 +149,35 @@ struct GeoObject: Decodable {
 // MARK: - City
 struct City: Decodable {
     let name: String
+}
+
+// MARK: - Forecast
+struct Forecast: Decodable {
+    let date: String
+    let parts: Parts
+}
+
+// MARK: - Parts
+struct Parts: Decodable {
+    let nightShort, dayShort: FactShort
+
+    enum CodingKeys: String, CodingKey {
+        case nightShort = "night_short"
+        case dayShort = "day_short"
+    }
+}
+
+// MARK: - FactShort
+struct FactShort: Decodable {
+    let temp: Int
+    let windSpeed: Double
+    let icon: String
+    let condition: Condition
+
+    enum CodingKeys: String, CodingKey {
+        case temp
+        case windSpeed = "wind_speed"
+        case icon
+        case condition
+    }
 }
