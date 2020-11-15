@@ -115,16 +115,8 @@
                                 <rect key="frame" x="0.0" y="323" width="390" height="438"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="35" id="kMg-s0-4LW">
-                                        <rect key="frame" x="0.0" y="28" width="390" height="35"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kMg-s0-4LW" id="cwQ-b1-WNv" customClass="ToSiteTableViewCell" customModule="Weather" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="35"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="forecastCell" rowHeight="60" id="0Hy-mk-lu7" customClass="ForecastTableViewCell" customModule="Weather" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="63" width="390" height="60"/>
+                                        <rect key="frame" x="0.0" y="28" width="390" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0Hy-mk-lu7" id="uw1-sE-jN0">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="60"/>
@@ -234,19 +226,46 @@
         <!--Погода в мире-->
         <scene sceneID="lmR-JV-Dl1">
             <objects>
-                <tableViewController id="0KS-MP-SvB" sceneMemberID="viewController">
+                <tableViewController id="0KS-MP-SvB" customClass="WorldWeatherViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EBS-bQ-IbQ">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="D2V-aW-ama">
-                                <rect key="frame" x="0.0" y="28" width="390" height="43.666667938232422"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cityWeatherCell" rowHeight="50" id="D2V-aW-ama" customClass="CityWeatherTableViewCell" customModule="Weather" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="390" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="D2V-aW-ama" id="aYI-PK-c3L">
-                                    <rect key="frame" x="0.0" y="0.0" width="390" height="43.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Город" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ps7-Yf-RpX">
+                                            <rect key="frame" x="15.999999999999996" y="12" width="59.666666666666657" height="26"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+33°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0r-O2-0d5">
+                                            <rect key="frame" x="325" y="11.999999999999998" width="49" height="26.333333333333329"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="I0r-O2-0d5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ps7-Yf-RpX" secondAttribute="trailing" constant="30" id="DZk-rK-q0f"/>
+                                        <constraint firstItem="ps7-Yf-RpX" firstAttribute="centerY" secondItem="aYI-PK-c3L" secondAttribute="centerY" id="OD5-k2-mbN"/>
+                                        <constraint firstItem="ps7-Yf-RpX" firstAttribute="top" secondItem="aYI-PK-c3L" secondAttribute="top" constant="12" id="SAg-dR-Hav"/>
+                                        <constraint firstAttribute="trailing" secondItem="I0r-O2-0d5" secondAttribute="trailing" constant="16" id="dFk-4d-ofM"/>
+                                        <constraint firstAttribute="bottom" secondItem="ps7-Yf-RpX" secondAttribute="bottom" constant="12" id="kJP-oR-TeL"/>
+                                        <constraint firstItem="I0r-O2-0d5" firstAttribute="centerY" secondItem="aYI-PK-c3L" secondAttribute="centerY" id="lhA-fd-9Re"/>
+                                        <constraint firstItem="ps7-Yf-RpX" firstAttribute="leading" secondItem="aYI-PK-c3L" secondAttribute="leading" constant="16" id="qIk-nZ-YQQ"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="cityNameLabel" destination="ps7-Yf-RpX" id="Sxp-e9-gPD"/>
+                                    <outlet property="temperatureLabel" destination="I0r-O2-0d5" id="363-s1-ZC4"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -254,11 +273,22 @@
                             <outlet property="delegate" destination="0KS-MP-SvB" id="2ca-ow-aBk"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Погода в мире" id="Hpu-rg-zEl"/>
+                    <tabBarItem key="tabBarItem" title="Item" id="9OC-TE-WT4"/>
+                    <navigationItem key="navigationItem" title="Погода в мире" id="Hpu-rg-zEl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="waE-KL-wnE">
+                            <connections>
+                                <action selector="addButtonPressed:" destination="0KS-MP-SvB" id="7Gs-un-zFm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="F7o-tS-UeS" kind="show" identifier="toWebView" id="h74-3R-M4K"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mDp-PR-htT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1642" y="835"/>
+            <point key="canvasLocation" x="1641.5384615384614" y="834.59715639810418"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="oRy-g1-0PJ">
@@ -355,6 +385,9 @@
             <point key="canvasLocation" x="711" y="80"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="bJK-1T-NQa"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="air_pressure_icon" width="128" height="128"/>
         <image name="globe" catalog="system" width="128" height="121"/>

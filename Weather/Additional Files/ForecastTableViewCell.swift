@@ -20,8 +20,9 @@ class ForecastTableViewCell: UITableViewCell {
         let date = getDateFromString(forecast.date)
         dateLabel.text = getStringFromDate(date)
         weekdayLabel.text = getWeekdayDate(date)
-        dayTemperatureLabel.text = "\(forecast.parts.dayShort.temp)°"
-        nightTemperatureLabel.text = "\(forecast.parts.nightShort.temp)°"
+        weekdayLabel.textColor = isWeekend(date) ? .orange : .black
+        dayTemperatureLabel.text = "\(forecast.parts.dayShort.temp.withSign())°"
+        nightTemperatureLabel.text = "\(forecast.parts.nightShort.temp.withSign())°"
     }
     
     // MARK: - Private methods
@@ -48,5 +49,13 @@ class ForecastTableViewCell: UITableViewCell {
 //        dateFormatter.doesRelativeDateFormatting = true
         dateFormatter.dateFormat = "EEEE"
         return dateFormatter.string(from: date).capitalized
+    }
+    
+    private func isWeekend(_ date: Date) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        dateFormatter.dateFormat = "e"
+        return dateFormatter.string(from: date) == "6"
+            || dateFormatter.string(from: date) == "7"
     }
 }

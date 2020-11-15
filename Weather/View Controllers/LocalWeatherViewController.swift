@@ -10,7 +10,7 @@ import WebKit
 
 class LocalWeatherViewController: UIViewController {
 
-    // MARK: - Outlets
+    // MARK: - Outlets    
     @IBOutlet var temperatureLabel: UILabel!
     @IBOutlet var conditionLabel: UILabel!
     @IBOutlet var feelsLikeLabel: UILabel!
@@ -29,13 +29,17 @@ class LocalWeatherViewController: UIViewController {
     // MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.setupViewGradient(
+            withColors: [UIColor.systemTeal.cgColor, UIColor.systemGreen.cgColor],
+            opacity: 0.2
+        )
 
         WeatherRequest.fetchData { [weak self] weather in
             
             guard let `self` = self else { return }
 
             DispatchQueue.main.async {
-                print(weather)
                 self.weather = weather
                 self.updateLocalWeather()
                 self.forecasts = weather.forecasts
@@ -60,9 +64,9 @@ class LocalWeatherViewController: UIViewController {
         let fact = weather.fact
         
         title = weather.geoObject.city.name
-        temperatureLabel.text = "\(fact.temp)°"
+        temperatureLabel.text = "\(fact.temp.withSign())°"
         conditionLabel.text = fact.condition.inRussian
-        feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike)°"
+        feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike.withSign())°"
         windLabel.text = fact.windDirection == .c
             ? "\(fact.windSpeed) м/с"
             : "\(fact.windSpeed) м/с, \(fact.windDirection.inRussian)"
@@ -83,6 +87,7 @@ class LocalWeatherViewController: UIViewController {
     }
 }
 
+// MARK: - TableViewDataSource
 extension LocalWeatherViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         forecasts.count
@@ -92,5 +97,12 @@ extension LocalWeatherViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "forecastCell") as! ForecastTableViewCell
         cell.configure(for: forecasts[indexPath.row])
         return cell
+    }
+}
+
+// MARK: - TableViewDelegate
+extension LocalWeatherViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

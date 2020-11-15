@@ -10,17 +10,17 @@ import Foundation
 struct WeatherRequest {
     
     static let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
-    static let numberOfDays = 3
     
-    static func fetchData(completionHandler: @escaping (Weather) -> Void) {
+    static func fetchData(latitude: String = "",
+                          longitude: String = "",
+                          completionHandler: @escaping (Weather) -> Void) {
         
-        let stringURL = "https://api.weather.yandex.ru/v2/forecast"
+        let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
+        let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
+
+        let stringURL = "https://api.weather.yandex.ru/v2/forecast?\(latitudeString)\(longitudeString)lang=ru_RU&limit=7&hours=false&extra=false"
         
-        let defaultHeaders = ["X-Yandex-API-Key" : apiKey,
-                              "lang" : "ru_RU",
-                              "limit" : "1",//\(numberOfDays)",
-                              "hours" : "false",
-                              "extra" : "false"]
+        let defaultHeaders = ["X-Yandex-API-Key" : apiKey]
         
         guard let url = URL(string: stringURL) else { return }
         

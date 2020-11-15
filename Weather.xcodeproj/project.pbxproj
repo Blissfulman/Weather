@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE720E622561871400D22DD1 /* CityWeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE720E612561871400D22DD1 /* CityWeatherTableViewCell.swift */; };
+		CE720E6525618F9500D22DD1 /* Extension + Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE720E6425618F9500D22DD1 /* Extension + Int.swift */; };
+		CE720E69256190DE00D22DD1 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE720E68256190DE00D22DD1 /* Forecast.swift */; };
+		CE720E6C256198A000D22DD1 /* Extension + UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE720E6B256198A000D22DD1 /* Extension + UIView.swift */; };
 		CE8AC2B92560281700A4CE16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2B82560281700A4CE16 /* AppDelegate.swift */; };
 		CE8AC2BD2560281700A4CE16 /* LocalWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2BC2560281700A4CE16 /* LocalWeatherViewController.swift */; };
 		CE8AC2C02560281700A4CE16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE8AC2BE2560281700A4CE16 /* Main.storyboard */; };
@@ -16,9 +20,15 @@
 		CE8AC2DC25603BCE00A4CE16 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2DB25603BCE00A4CE16 /* Weather.swift */; };
 		CE8AC2E72561012E00A4CE16 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2E62561012E00A4CE16 /* ForecastTableViewCell.swift */; };
 		CE8AC2EF256150AC00A4CE16 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2EE256150AC00A4CE16 /* WebViewController.swift */; };
+		CE8AC2F22561647100A4CE16 /* WorldWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2F12561647100A4CE16 /* WorldWeatherViewController.swift */; };
+		CE8AC2F62561661C00A4CE16 /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2F52561661C00A4CE16 /* Info.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE720E612561871400D22DD1 /* CityWeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherTableViewCell.swift; sourceTree = "<group>"; };
+		CE720E6425618F9500D22DD1 /* Extension + Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + Int.swift"; sourceTree = "<group>"; };
+		CE720E68256190DE00D22DD1 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
+		CE720E6B256198A000D22DD1 /* Extension + UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UIView.swift"; sourceTree = "<group>"; };
 		CE8AC2B52560281700A4CE16 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE8AC2B82560281700A4CE16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE8AC2BC2560281700A4CE16 /* LocalWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalWeatherViewController.swift; sourceTree = "<group>"; };
@@ -30,6 +40,8 @@
 		CE8AC2DB25603BCE00A4CE16 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		CE8AC2E62561012E00A4CE16 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 		CE8AC2EE256150AC00A4CE16 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		CE8AC2F12561647100A4CE16 /* WorldWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldWeatherViewController.swift; sourceTree = "<group>"; };
+		CE8AC2F52561661C00A4CE16 /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8AC2BC2560281700A4CE16 /* LocalWeatherViewController.swift */,
+				CE8AC2F12561647100A4CE16 /* WorldWeatherViewController.swift */,
 				CE8AC2EE256150AC00A4CE16 /* WebViewController.swift */,
 			);
 			path = "View Controllers";
@@ -104,6 +117,9 @@
 				CE8AC2B82560281700A4CE16 /* AppDelegate.swift */,
 				CE8AC2C62560281900A4CE16 /* Info.plist */,
 				CE8AC2E62561012E00A4CE16 /* ForecastTableViewCell.swift */,
+				CE720E612561871400D22DD1 /* CityWeatherTableViewCell.swift */,
+				CE720E6425618F9500D22DD1 /* Extension + Int.swift */,
+				CE720E6B256198A000D22DD1 /* Extension + UIView.swift */,
 			);
 			path = "Additional Files";
 			sourceTree = "<group>";
@@ -112,6 +128,8 @@
 			isa = PBXGroup;
 			children = (
 				CE8AC2DB25603BCE00A4CE16 /* Weather.swift */,
+				CE8AC2F52561661C00A4CE16 /* Info.swift */,
+				CE720E68256190DE00D22DD1 /* Forecast.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -195,10 +213,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE8AC2DC25603BCE00A4CE16 /* Weather.swift in Sources */,
+				CE8AC2F22561647100A4CE16 /* WorldWeatherViewController.swift in Sources */,
 				CE8AC2EF256150AC00A4CE16 /* WebViewController.swift in Sources */,
+				CE720E6525618F9500D22DD1 /* Extension + Int.swift in Sources */,
 				CE8AC2E72561012E00A4CE16 /* ForecastTableViewCell.swift in Sources */,
 				CE8AC2D8256030F500A4CE16 /* WeatherRequest.swift in Sources */,
+				CE8AC2F62561661C00A4CE16 /* Info.swift in Sources */,
 				CE8AC2BD2560281700A4CE16 /* LocalWeatherViewController.swift in Sources */,
+				CE720E6C256198A000D22DD1 /* Extension + UIView.swift in Sources */,
+				CE720E622561871400D22DD1 /* CityWeatherTableViewCell.swift in Sources */,
+				CE720E69256190DE00D22DD1 /* Forecast.swift in Sources */,
 				CE8AC2B92560281700A4CE16 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
