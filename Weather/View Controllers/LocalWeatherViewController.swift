@@ -17,13 +17,15 @@ class LocalWeatherViewController: UIViewController {
     @IBOutlet var airPressureLabel: UILabel!
     @IBOutlet var humidityLabel: UILabel!
     
-    @IBOutlet var forecastTableView: UITableView!
-    
     @IBOutlet var iconConditionView: UIView!
     
+    @IBOutlet var forecastTableView: UITableView!
+    
     // MARK: - Properties
-    var weather: Weather!
-    var forecasts = [Forecast]()
+    private let networkManager = NetworkManager.shared
+    
+    private var weather: Weather!
+    private var forecasts = [Forecast]()
     
     // MARK: - Lifecycle methods
     override func viewDidLoad() {
@@ -34,7 +36,7 @@ class LocalWeatherViewController: UIViewController {
             opacity: 0.2
         )
 
-        NetworkManager.fetchWeatherData { [weak self] weather in
+        networkManager.fetchWeatherData { [weak self] weather in
             
             guard let `self` = self else { return }
 
@@ -49,6 +51,7 @@ class LocalWeatherViewController: UIViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         let webVC = segue.destination as! WebViewController
         webVC.url = weather.info.url
         webVC.title = weather.geoObject.city.name
@@ -72,7 +75,7 @@ class LocalWeatherViewController: UIViewController {
         airPressureLabel.text = "\(fact.pressureMm) мм рт. ст."
         humidityLabel.text = "\(fact.humidity)%"
 
-        NetworkManager.fetchConditionImage(fact.icon,
+        networkManager.fetchConditionImage(fact.icon,
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             
@@ -85,6 +88,7 @@ class LocalWeatherViewController: UIViewController {
 
 // MARK: - TableViewDataSource
 extension LocalWeatherViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         forecasts.count
     }
@@ -98,6 +102,11 @@ extension LocalWeatherViewController: UITableViewDataSource {
 
 // MARK: - TableViewDelegate
 extension LocalWeatherViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        55
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

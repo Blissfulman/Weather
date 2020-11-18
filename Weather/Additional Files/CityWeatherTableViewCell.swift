@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftSVG
 
 class CityWeatherTableViewCell: UITableViewCell {
 
@@ -14,11 +13,13 @@ class CityWeatherTableViewCell: UITableViewCell {
     @IBOutlet var temperatureLabel: UILabel!
     @IBOutlet var iconConditionView: UIView!
     
+    private let networkManager = NetworkManager.shared
+    
     func configure(for weather: Weather) {
         cityNameLabel.text = weather.geoObject.city.name
         temperatureLabel.text = "\(weather.fact.temp.withSign())°"
         
-        NetworkManager.fetchConditionImage(weather.fact.icon,
+        networkManager.fetchConditionImage(weather.fact.icon,
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             

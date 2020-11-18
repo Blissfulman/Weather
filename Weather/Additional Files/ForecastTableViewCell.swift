@@ -16,6 +16,9 @@ class ForecastTableViewCell: UITableViewCell {
     @IBOutlet var nightTemperatureLabel: UILabel!
 
     @IBOutlet var iconConditionView: UIView!
+
+    // MARK: - Properties
+    private let networkManager = NetworkManager.shared
     
     // MARK: - Setup UI
     func configure(for forecast: Forecast) {
@@ -26,7 +29,7 @@ class ForecastTableViewCell: UITableViewCell {
         dayTemperatureLabel.text = "\(forecast.parts.dayShort.temp.withSign())°"
         nightTemperatureLabel.text = "\(forecast.parts.nightShort.temp.withSign())°"
         
-        NetworkManager.fetchConditionImage(forecast.parts.dayShort.icon,
+        networkManager.fetchConditionImage(forecast.parts.dayShort.icon,
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             

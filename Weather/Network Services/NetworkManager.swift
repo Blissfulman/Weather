@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import SwiftSVG
 
 struct NetworkManager {
     
-    static let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
+    static let shared = NetworkManager()
     
-    static func fetchWeatherData(latitude: String = "",
+    private let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
+    
+    private init() {}
+    
+    func fetchWeatherData(latitude: String = "",
                                  longitude: String = "",
                                  completionHandler: @escaping (Weather) -> Void) {
         
@@ -54,16 +59,18 @@ struct NetworkManager {
         }.resume()
     }
     
-    static func fetchConditionImage(
+    func fetchConditionImage(
         _ icon: String,
         toSize size: CGRect,
         completionHandler: @escaping (UIView) -> Void
     ) {
-        
         let stringImageURL = "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg"
         guard let imageURL = URL(string: stringImageURL) else { return }
         let conditionImage = UIView(SVGURL: imageURL) { image in
-            image.resizeToFit(size)
+            image.resizeToFit(CGRect(x: size.origin.x,
+                                     y: size.origin.y,
+                                     width: size.width * 0.85,
+                                     height: size.height * 0.85))
         }
         completionHandler(conditionImage)
     }
