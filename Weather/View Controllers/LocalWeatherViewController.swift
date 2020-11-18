@@ -36,7 +36,7 @@ class LocalWeatherViewController: UIViewController {
             opacity: 0.2
         )
 
-        networkManager.fetchWeatherData { [weak self] weather in
+        networkManager.fetchWeatherDataAF { [weak self] weather in
             
             guard let `self` = self else { return }
 

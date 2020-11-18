@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 import SwiftSVG
 
 struct NetworkManager {
@@ -17,20 +18,18 @@ struct NetworkManager {
     private init() {}
     
     func fetchWeatherData(latitude: String = "",
-                                 longitude: String = "",
-                                 completionHandler: @escaping (Weather) -> Void) {
+                          longitude: String = "",
+                          completionHandler: @escaping (Weather) -> Void) {
         
         let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
         let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
 
         let stringURL = "https://api.weather.yandex.ru/v2/forecast?\(latitudeString)\(longitudeString)lang=ru_RU&limit=7&hours=false&extra=false"
-        
-        let defaultHeaders = ["X-Yandex-API-Key" : apiKey]
-        
+                
         guard let url = URL(string: stringURL) else { return }
         
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = defaultHeaders
+        request.allHTTPHeaderFields = ["X-Yandex-API-Key" : apiKey]
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -57,6 +56,28 @@ struct NetworkManager {
             }
             
         }.resume()
+    }
+    
+    func fetchWeatherDataAF(latitude: String = "",
+                            longitude: String = "",
+                            completionHandler: @escaping (Weather) -> Void) {
+        
+        let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
+        let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
+
+        let stringURL = "https://api.weather.yandex.ru/v2/forecast?\(latitudeString)\(longitudeString)lang=ru_RU&limit=7&hours=false&extra=false"
+        
+        let header: HTTPHeaders = ["X-Yandex-API-Key" : apiKey]
+        
+        AF.request(stringURL, headers: header)
+            .responseDecodable(of: Weather.self) { response in
+                switch response.result {
+                case .success(let weather):
+                    completionHandler(weather)
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
     
     func fetchConditionImage(

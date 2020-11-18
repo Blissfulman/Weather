@@ -61,7 +61,7 @@ class WorldWeatherViewController: UITableViewController {
             
             guard let coordinates = coordinates else { return }
             
-            self.networkManager.fetchWeatherData(
+            self.networkManager.fetchWeatherDataAF(
                 latitude: String(coordinates.latitude),
                 longitude: String(coordinates.longitude)) {
                 (weather) in
