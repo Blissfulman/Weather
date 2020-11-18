@@ -12,13 +12,13 @@ struct Fact: Decodable {
     let temp: Int
     let feelsLike: Int
     let icon: String
-    let condition: Condition
+    let condition: Condition?
     let isThunder: Bool?
     let windSpeed: Double
-    let windDirection: WindDirection
+    let windDirection: WindDirection?
     let pressureMm: Int
     let humidity: Int
-    let season: Season
+    let season: Season?
 
     enum CodingKeys: String, CodingKey {
         case temp
@@ -31,6 +31,24 @@ struct Fact: Decodable {
         case pressureMm = "pressure_mm"
         case humidity
         case season
+    }
+    
+    init(jsonData: [String : Any]) {
+        temp = jsonData["temp"] as! Int
+        feelsLike = jsonData["feels_like"] as! Int
+        icon = jsonData["icon"] as! String
+        condition = Condition.getCondition(from: jsonData["condition"] as! String)
+        isThunder = jsonData["is_thunder"] as? Bool
+        windSpeed = jsonData["wind_speed"] as! Double
+        windDirection = WindDirection.getWindDirection(from: jsonData["wind_dir"] as! String)
+        pressureMm = jsonData["pressure_mm"] as! Int
+        humidity = jsonData["humidity"] as! Int
+        season = Season.getSeason(from: jsonData["season"] as! String)
+    }
+    
+    static func getFact(from value: Any) -> Fact {
+        let data = value as! [String: Any]
+        return Fact(jsonData: data)
     }
 }
 
@@ -79,6 +97,15 @@ enum Condition: String, Decodable {
         case .thunderstormWithHail: return "Гроза с градом"
         }
     }
+    
+    init?(jsonData: String) {
+        self.init(rawValue: jsonData)
+    }
+    
+    static func getCondition(from value: Any) -> Condition? {
+        guard let data = value as? String else { return nil }
+        return Condition(jsonData: data)
+    }
 }
 
 // MARK: - WindDirection
@@ -106,6 +133,15 @@ enum WindDirection: String, Decodable {
         case .c: return ""
         }
     }
+    
+    init?(jsonData: String) {
+        self.init(rawValue: jsonData)
+    }
+    
+    static func getWindDirection(from value: Any) -> WindDirection? {
+        guard let data = value as? String else { return nil }
+        return WindDirection(jsonData: data)
+    }
 }
 
 // MARK: - Season
@@ -114,4 +150,13 @@ enum Season: String, Decodable {
     case autumn
     case winter
     case spring
+    
+    init?(jsonData: String) {
+        self.init(rawValue: jsonData)
+    }
+    
+    static func getSeason(from value: Any) -> Season? {
+        guard let data = value as? String else { return nil }
+        return Season(jsonData: data)
+    }
 }

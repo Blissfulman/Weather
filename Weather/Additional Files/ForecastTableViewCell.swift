@@ -22,7 +22,9 @@ class ForecastTableViewCell: UITableViewCell {
     
     // MARK: - Setup UI
     func configure(for forecast: Forecast) {
+        
         let date = getDateFromString(forecast.date)
+        
         dateLabel.text = getStringFromDate(date)
         weekdayLabel.text = getWeekdayDate(date)
         weekdayLabel.textColor = isWeekend(date) ? .orange : .black

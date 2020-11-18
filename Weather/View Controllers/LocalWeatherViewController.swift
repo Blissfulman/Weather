@@ -67,11 +67,11 @@ class LocalWeatherViewController: UIViewController {
         
         title = weather.geoObject.city.name
         temperatureLabel.text = "\(fact.temp.withSign())°"
-        conditionLabel.text = fact.condition.inRussian
+        conditionLabel.text = fact.condition?.inRussian
         feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike.withSign())°"
         windLabel.text = fact.windDirection == .c
             ? "\(fact.windSpeed) м/с"
-            : "\(fact.windSpeed) м/с, \(fact.windDirection.inRussian)"
+            : "\(fact.windSpeed) м/с, \(fact.windDirection?.inRussian ?? "")"
         airPressureLabel.text = "\(fact.pressureMm) мм рт. ст."
         humidityLabel.text = "\(fact.humidity)%"
 
