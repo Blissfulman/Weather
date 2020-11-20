@@ -72,9 +72,8 @@ struct NetworkManager {
         AF.request(stringURL, headers: header)
             .responseJSON() { response in
                 switch response.result {
-                case .success(let jsonData):
-                    guard let weather =
-                            Weather.getWeather(from: jsonData) else { return }
+                case let .success(jsonData):
+                    guard let weather = Weather(from: jsonData) else { return }
                     completionHandler(weather)
                 case .failure(let error):
                     print(error)

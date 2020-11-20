@@ -43,7 +43,7 @@ class LocalWeatherViewController: UIViewController {
             DispatchQueue.main.async {
                 self.weather = weather
                 self.updateLocalWeather()
-                self.forecasts = weather.forecasts
+                self.forecasts = weather.forecasts ?? []
                 self.forecastTableView.reloadData()
             }
         }
@@ -53,8 +53,8 @@ class LocalWeatherViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let webVC = segue.destination as! WebViewController
-        webVC.url = weather.info.url
-        webVC.title = weather.geoObject.city.name
+        webVC.url = weather.info?.url ?? ""
+        webVC.title = weather.geoObject?.city?.name ?? ""
         let backItem = UIBarButtonItem()
         backItem.title = "Назад"
         navigationItem.backBarButtonItem = backItem
@@ -63,19 +63,19 @@ class LocalWeatherViewController: UIViewController {
     // MARK: - Private methods
     private func updateLocalWeather() {
         
-        let fact = weather.fact
+        guard let fact = weather.fact else { return }
         
-        title = weather.geoObject.city.name
-        temperatureLabel.text = "\(fact.temp.withSign())°"
-        conditionLabel.text = fact.condition?.inRussian
-        feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike.withSign())°"
+        title = weather.geoObject?.city?.name
+        temperatureLabel.text = "\(fact.temp?.withSign() ?? "")°"
+        conditionLabel.text = weather.fact?.condition?.inRussian
+        feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike?.withSign() ?? "")°"
         windLabel.text = fact.windDirection == .c
-            ? "\(fact.windSpeed) м/с"
-            : "\(fact.windSpeed) м/с, \(fact.windDirection?.inRussian ?? "")"
-        airPressureLabel.text = "\(fact.pressureMm) мм рт. ст."
-        humidityLabel.text = "\(fact.humidity)%"
+            ? "\(fact.windSpeed ?? 0) м/с"
+            : "\(fact.windSpeed ?? 0) м/с, \(fact.windDirection?.inRussian ?? "")"
+        airPressureLabel.text = "\(fact.pressureMm ?? 0) мм рт. ст."
+        humidityLabel.text = "\(fact.humidity ?? 0)%"
 
-        networkManager.fetchConditionImage(fact.icon,
+        networkManager.fetchConditionImage(fact.icon ?? "",
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             

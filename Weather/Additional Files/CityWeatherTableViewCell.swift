@@ -16,10 +16,14 @@ class CityWeatherTableViewCell: UITableViewCell {
     private let networkManager = NetworkManager.shared
     
     func configure(for weather: Weather) {
-        cityNameLabel.text = weather.geoObject.city.name
-        temperatureLabel.text = "\(weather.fact.temp.withSign())°"
         
-        networkManager.fetchConditionImage(weather.fact.icon,
+        guard let cityName = weather.geoObject?.city?.name else { return }
+        guard let temp = weather.fact?.temp?.withSign() else { return }
+        
+        cityNameLabel.text = cityName
+        temperatureLabel.text = "\(temp)°"
+        
+        networkManager.fetchConditionImage(weather.fact?.icon ?? "",
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             

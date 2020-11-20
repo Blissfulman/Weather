@@ -44,8 +44,8 @@ class WorldWeatherViewController: UITableViewController {
         let webVC = segue.destination as! WebViewController
         guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
         let weather = weatherInCities[selectedIndexPath.item]
-        webVC.url = weather.info.url
-        webVC.title = weather.geoObject.city.name
+        webVC.url = weather.info?.url
+        webVC.title = weather.geoObject?.city?.name
         let backItem = UIBarButtonItem()
         backItem.title = "Назад"
         navigationItem.backBarButtonItem = backItem

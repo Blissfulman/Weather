@@ -9,10 +9,10 @@ import Foundation
 
 // MARK: - Weather
 struct Weather: Decodable {
-    let info: Info
-    let geoObject: GeoObject
-    let fact: Fact
-    let forecasts: [Forecast]
+    let info: Info?
+    let geoObject: GeoObject?
+    let fact: Fact?
+    let forecasts: [Forecast]?
 
     enum CodingKeys: String, CodingKey {
         case info
@@ -21,68 +21,52 @@ struct Weather: Decodable {
         case forecasts
     }
         
-    init(jsonData: [String : Any]) {
-        info = Info.getInfo(from: jsonData["info"] as! [String : Any])
-        geoObject = GeoObject.getGeoObject(from: jsonData["geo_object"] as! [String : Any])
-        fact = Fact.getFact(from: jsonData["fact"] as! [String : Any])
-        forecasts = Forecast.getForecast(from: jsonData["forecasts"] as! [[String : Any]])
-    }
-    
-    static func getWeather(from value: Any) -> Weather? {
-        guard let data = value as? [String: Any] else { return nil }
-        return Weather(jsonData: data)
+    init?(from jsonData: Any) {
+        guard let jsonData = jsonData as? [String : Any] else { return nil }
+        
+        info = Info(from: jsonData["info"] as? [String : Any] ?? [:])
+        geoObject = GeoObject(from: jsonData["geo_object"] as? [String : Any] ?? [:])
+        fact = Fact(from: jsonData["fact"] as? [String : Any] ?? [:])
+        
+        let forecastsData = jsonData["forecasts"] as? [[String: Any]] ?? []
+        forecasts = forecastsData.compactMap { Forecast(from: $0) }
     }
 }
 
 // MARK: - Info
 struct Info: Decodable {
-    let n: Bool
-    let geoid: Int
-    let url: String
-    let lat, lon: Double
+    let n: Bool?
+    let geoid: Int?
+    let url: String?
+    let lat, lon: Double?
     
-    init(jsonData: [String : Any]) {
-        n = jsonData["n"] as! Bool
-        geoid = jsonData["geoid"] as! Int
-        url = jsonData["url"] as! String
-        lat = jsonData["lat"] as! Double
-        lon = jsonData["lon"] as! Double
-    }
-    
-    static func getInfo(from value: Any) -> Info {
-        let data = value as! [String: Any]
-        return Info(jsonData: data)
+    init(from jsonData: [String : Any]) {
+        n = jsonData["n"] as? Bool
+        geoid = jsonData["geoid"] as? Int
+        url = jsonData["url"] as? String
+        lat = jsonData["lat"] as? Double
+        lon = jsonData["lon"] as? Double
     }
 }
 
 // MARK: - GeoObject
 struct GeoObject: Decodable {
-    let city: City
+    let city: City?
     
     enum CodingKeys: String, CodingKey {
         case city = "locality"
     }
     
-    init(jsonData: [String : Any]) {
-        city = City.getCity(from: jsonData["locality"] as! [String : Any])
-    }
-    
-    static func getGeoObject(from value: Any) -> GeoObject {
-        let data = value as! [String: Any]
-        return GeoObject(jsonData: data)
+    init(from jsonData: [String : Any]) {
+        city = City(from: jsonData["locality"] as? [String : Any] ?? [:])
     }
 }
 
 // MARK: - City
 struct City: Decodable {
-    let name: String
+    let name: String?
     
-    init(jsonData: [String : Any]) {
-        name = jsonData["name"] as! String
-    }
-    
-    static func getCity(from value: Any) -> City {
-        let data = value as! [String: Any]
-        return City(jsonData: data)
+    init(from jsonData: [String : Any]) {
+        name = jsonData["name"] as? String
     }
 }
