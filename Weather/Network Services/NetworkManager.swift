@@ -70,15 +70,24 @@ struct NetworkManager {
         let header: HTTPHeaders = ["X-Yandex-API-Key" : apiKey]
         
         AF.request(stringURL, headers: header)
-            .responseJSON() { response in
+            .responseDecodable(of: Weather.self) { response in
                 switch response.result {
-                case let .success(jsonData):
-                    guard let weather = Weather(from: jsonData) else { return }
+                case let .success(weather):
                     completionHandler(weather)
-                case .failure(let error):
-                    print(error)
+                case let .failure(error):
+                    print(error.localizedDescription)
                 }
             }
+        
+//            .responseJSON() { response in
+//                switch response.result {
+//                case let .success(jsonData):
+//                    guard let weather = Weather(from: jsonData) else { return }
+//                    completionHandler(weather)
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
     }
     
     func fetchConditionImage(
