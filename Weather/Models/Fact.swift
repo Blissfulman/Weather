@@ -9,16 +9,16 @@ import Foundation
 
 // MARK: - Fact
 struct Fact: Decodable {
-    let temp: Int
-    let feelsLike: Int
-    let icon: String
-    let condition: Condition
+    let temp: Int?
+    let feelsLike: Int?
+    let icon: String?
+    let condition: Condition?
     let isThunder: Bool?
-    let windSpeed: Double
-    let windDirection: WindDirection
-    let pressureMm: Int
-    let humidity: Int
-    let season: Season
+    let windSpeed: Double?
+    let windDirection: WindDirection?
+    let pressureMm: Int?
+    let humidity: Int?
+    let season: Season?
 
     enum CodingKeys: String, CodingKey {
         case temp
@@ -31,6 +31,19 @@ struct Fact: Decodable {
         case pressureMm = "pressure_mm"
         case humidity
         case season
+    }
+    
+    init(from jsonData: [String : Any]) {
+        temp = jsonData["temp"] as? Int
+        feelsLike = jsonData["feels_like"] as? Int
+        icon = jsonData["icon"] as? String
+        condition = Condition(from: jsonData["condition"] as! String)
+        isThunder = jsonData["is_thunder"] as? Bool
+        windSpeed = jsonData["wind_speed"] as? Double
+        windDirection = WindDirection(from: jsonData["wind_dir"] as! String)
+        pressureMm = jsonData["pressure_mm"] as? Int
+        humidity = jsonData["humidity"] as? Int
+        season = Season(from: jsonData["season"] as! String)
     }
 }
 
@@ -79,6 +92,10 @@ enum Condition: String, Decodable {
         case .thunderstormWithHail: return "Гроза с градом"
         }
     }
+    
+    init?(from jsonData: String) {
+        self.init(rawValue: jsonData)
+    }
 }
 
 // MARK: - WindDirection
@@ -106,6 +123,10 @@ enum WindDirection: String, Decodable {
         case .c: return ""
         }
     }
+    
+    init?(from jsonData: String) {
+        self.init(rawValue: jsonData)
+    }
 }
 
 // MARK: - Season
@@ -114,4 +135,8 @@ enum Season: String, Decodable {
     case autumn
     case winter
     case spring
+    
+    init?(from jsonData: String) {
+        self.init(rawValue: jsonData)
+    }
 }

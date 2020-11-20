@@ -16,17 +16,23 @@ class ForecastTableViewCell: UITableViewCell {
     @IBOutlet var nightTemperatureLabel: UILabel!
 
     @IBOutlet var iconConditionView: UIView!
+
+    // MARK: - Properties
+    private let networkManager = NetworkManager.shared
     
     // MARK: - Setup UI
     func configure(for forecast: Forecast) {
-        let date = getDateFromString(forecast.date)
-        dateLabel.text = getStringFromDate(date)
-        weekdayLabel.text = getWeekdayDate(date)
-        weekdayLabel.textColor = isWeekend(date) ? .orange : .black
-        dayTemperatureLabel.text = "\(forecast.parts.dayShort.temp.withSign())°"
-        nightTemperatureLabel.text = "\(forecast.parts.nightShort.temp.withSign())°"
         
-        NetworkManager.fetchConditionImage(forecast.parts.dayShort.icon,
+        if let date = getDateFromString(forecast.date) {
+            dateLabel.text = getStringFromDate(date)
+            weekdayLabel.text = getWeekdayDate(date)
+            weekdayLabel.textColor = isWeekend(date) ? .orange : .black
+        }
+        
+        dayTemperatureLabel.text = "\(forecast.parts?.dayShort?.temp?.withSign() ?? "")°"
+        nightTemperatureLabel.text = "\(forecast.parts?.nightShort?.temp?.withSign() ?? "")°"
+        
+        networkManager.fetchConditionImage(forecast.parts?.dayShort?.icon ?? "",
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             
@@ -37,12 +43,15 @@ class ForecastTableViewCell: UITableViewCell {
     }
     
     // MARK: - Private methods
-    private func getDateFromString(_ stringDate: String) -> Date {
+    private func getDateFromString(_ stringDate: String?) -> Date? {
+        
+        guard let stringDate = stringDate else { return nil }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         guard let date = dateFormatter.date(from: stringDate) else {
             print("Error date format")
-            return Date()
+            return nil
         }
         return date
     }

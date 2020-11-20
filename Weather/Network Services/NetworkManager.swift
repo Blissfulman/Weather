@@ -6,26 +6,30 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftSVG
 
 struct NetworkManager {
     
-    static let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
+    static let shared = NetworkManager()
     
-    static func fetchWeatherData(latitude: String = "",
-                                 longitude: String = "",
-                                 completionHandler: @escaping (Weather) -> Void) {
+    private let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
+    
+    private init() {}
+    
+    func fetchWeatherData(latitude: String = "",
+                          longitude: String = "",
+                          completionHandler: @escaping (Weather) -> Void) {
         
         let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
         let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
 
         let stringURL = "https://api.weather.yandex.ru/v2/forecast?\(latitudeString)\(longitudeString)lang=ru_RU&limit=7&hours=false&extra=false"
-        
-        let defaultHeaders = ["X-Yandex-API-Key" : apiKey]
-        
+                
         guard let url = URL(string: stringURL) else { return }
         
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = defaultHeaders
+        request.allHTTPHeaderFields = ["X-Yandex-API-Key" : apiKey]
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -54,16 +58,41 @@ struct NetworkManager {
         }.resume()
     }
     
-    static func fetchConditionImage(
+    func fetchWeatherDataAF(latitude: String = "",
+                            longitude: String = "",
+                            completionHandler: @escaping (Weather) -> Void) {
+        
+        let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
+        let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
+
+        let stringURL = "https://api.weather.yandex.ru/v2/forecast?\(latitudeString)\(longitudeString)lang=ru_RU&limit=7&hours=false&extra=false"
+        
+        let header: HTTPHeaders = ["X-Yandex-API-Key" : apiKey]
+        
+        AF.request(stringURL, headers: header)
+            .responseJSON() { response in
+                switch response.result {
+                case let .success(jsonData):
+                    guard let weather = Weather(from: jsonData) else { return }
+                    completionHandler(weather)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    func fetchConditionImage(
         _ icon: String,
         toSize size: CGRect,
         completionHandler: @escaping (UIView) -> Void
     ) {
-        
         let stringImageURL = "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg"
         guard let imageURL = URL(string: stringImageURL) else { return }
         let conditionImage = UIView(SVGURL: imageURL) { image in
-            image.resizeToFit(size)
+            image.resizeToFit(CGRect(x: size.origin.x,
+                                     y: size.origin.y,
+                                     width: size.width * 0.85,
+                                     height: size.height * 0.85))
         }
         completionHandler(conditionImage)
     }

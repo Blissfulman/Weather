@@ -17,13 +17,15 @@ class LocalWeatherViewController: UIViewController {
     @IBOutlet var airPressureLabel: UILabel!
     @IBOutlet var humidityLabel: UILabel!
     
-    @IBOutlet var forecastTableView: UITableView!
-    
     @IBOutlet var iconConditionView: UIView!
     
+    @IBOutlet var forecastTableView: UITableView!
+    
     // MARK: - Properties
-    var weather: Weather!
-    var forecasts = [Forecast]()
+    private let networkManager = NetworkManager.shared
+    
+    private var weather: Weather!
+    private var forecasts = [Forecast]()
     
     // MARK: - Lifecycle methods
     override func viewDidLoad() {
@@ -34,14 +36,14 @@ class LocalWeatherViewController: UIViewController {
             opacity: 0.2
         )
 
-        NetworkManager.fetchWeatherData { [weak self] weather in
+        networkManager.fetchWeatherDataAF { [weak self] weather in
             
             guard let `self` = self else { return }
 
             DispatchQueue.main.async {
                 self.weather = weather
                 self.updateLocalWeather()
-                self.forecasts = weather.forecasts
+                self.forecasts = weather.forecasts ?? []
                 self.forecastTableView.reloadData()
             }
         }
@@ -49,9 +51,10 @@ class LocalWeatherViewController: UIViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         let webVC = segue.destination as! WebViewController
-        webVC.url = weather.info.url
-        webVC.title = weather.geoObject.city.name
+        webVC.url = weather.info?.url ?? ""
+        webVC.title = weather.geoObject?.city?.name ?? ""
         let backItem = UIBarButtonItem()
         backItem.title = "Назад"
         navigationItem.backBarButtonItem = backItem
@@ -60,19 +63,19 @@ class LocalWeatherViewController: UIViewController {
     // MARK: - Private methods
     private func updateLocalWeather() {
         
-        let fact = weather.fact
+        guard let fact = weather.fact else { return }
         
-        title = weather.geoObject.city.name
-        temperatureLabel.text = "\(fact.temp.withSign())°"
-        conditionLabel.text = fact.condition.inRussian
-        feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike.withSign())°"
+        title = weather.geoObject?.city?.name
+        temperatureLabel.text = "\(fact.temp?.withSign() ?? "")°"
+        conditionLabel.text = weather.fact?.condition?.inRussian
+        feelsLikeLabel.text = "Ощущается как: \(fact.feelsLike?.withSign() ?? "")°"
         windLabel.text = fact.windDirection == .c
-            ? "\(fact.windSpeed) м/с"
-            : "\(fact.windSpeed) м/с, \(fact.windDirection.inRussian)"
-        airPressureLabel.text = "\(fact.pressureMm) мм рт. ст."
-        humidityLabel.text = "\(fact.humidity)%"
+            ? "\(fact.windSpeed ?? 0) м/с"
+            : "\(fact.windSpeed ?? 0) м/с, \(fact.windDirection?.inRussian ?? "")"
+        airPressureLabel.text = "\(fact.pressureMm ?? 0) мм рт. ст."
+        humidityLabel.text = "\(fact.humidity ?? 0)%"
 
-        NetworkManager.fetchConditionImage(fact.icon,
+        networkManager.fetchConditionImage(fact.icon ?? "",
                                            toSize: iconConditionView.bounds) {
             [weak self] image in
             
@@ -85,6 +88,7 @@ class LocalWeatherViewController: UIViewController {
 
 // MARK: - TableViewDataSource
 extension LocalWeatherViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         forecasts.count
     }
@@ -98,6 +102,11 @@ extension LocalWeatherViewController: UITableViewDataSource {
 
 // MARK: - TableViewDelegate
 extension LocalWeatherViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        55
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

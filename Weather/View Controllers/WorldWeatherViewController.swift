@@ -11,11 +11,13 @@ import CoreLocation
 class WorldWeatherViewController: UITableViewController {
     
     // MARK: - Properties
-    var weatherInCities = [Weather]()
-    let cityNames = ["Санкт-Петербург", "Сочи", "Владивосток", "Париж",
-                     "Лондон", "Милан", "Лиссабон", "Торонто", "Мурманск"]
+    private let networkManager = NetworkManager.shared
     
-    // MARK: - Lifecucle methods
+    private var weatherInCities = [Weather]()
+    private let cityNames = ["Санкт-Петербург", "Сочи", "Владивосток", "Париж",
+                             "Лондон", "Милан", "Лиссабон", "Торонто", "Якутск"]
+    
+    // MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +31,7 @@ class WorldWeatherViewController: UITableViewController {
     
     // MARK: - Actions
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
         addCityAlert { [weak self] sityName in
             guard let `self` = self else { return }
             self.addCity(sityName)
@@ -37,11 +40,12 @@ class WorldWeatherViewController: UITableViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         let webVC = segue.destination as! WebViewController
         guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
         let weather = weatherInCities[selectedIndexPath.item]
-        webVC.url = weather.info.url
-        webVC.title = weather.geoObject.city.name
+        webVC.url = weather.info?.url
+        webVC.title = weather.geoObject?.city?.name
         let backItem = UIBarButtonItem()
         backItem.title = "Назад"
         navigationItem.backBarButtonItem = backItem
@@ -49,6 +53,7 @@ class WorldWeatherViewController: UITableViewController {
 
     // MARK: - Private methods
     private func addCity(_ cityName: String) {
+        
         getCityCoordinates(for: cityName) {
             [weak self] (coordinates, error) in
             
@@ -56,7 +61,7 @@ class WorldWeatherViewController: UITableViewController {
             
             guard let coordinates = coordinates else { return }
             
-            NetworkManager.fetchWeatherData(
+            self.networkManager.fetchWeatherDataAF(
                 latitude: String(coordinates.latitude),
                 longitude: String(coordinates.longitude)) {
                 (weather) in
@@ -69,47 +74,14 @@ class WorldWeatherViewController: UITableViewController {
             }
         }
     }
-}
-
-// MARK: - TableViewDataSource
-extension WorldWeatherViewController {
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        weatherInCities.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cityWeatherCell") as! CityWeatherTableViewCell
-        cell.configure(for: weatherInCities[indexPath.item])
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") {
-            [weak self] (_, _, completionHandler) in
-            
-            guard let `self` = self else { return }
-            
-            self.weatherInCities.remove(at: indexPath.row)
-            tableView.reloadData()
-        }
-        return UISwipeActionsConfiguration(actions: [deleteAction])
-    }
-}
-
-// MARK: - TableViewDelegate
-extension WorldWeatherViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "toWebView", sender: nil)
-    }
-}
-
-extension WorldWeatherViewController {
     
     private func addCityAlert(completionHandler: @escaping (String) -> Void) {
         
-        let alertController = UIAlertController(title: "Добавление города", message: "Введите название города, который необходимо добавить", preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: "Добавление города",
+            message: "Введите название города, который необходимо добавить",
+            preferredStyle: .alert
+        )
         
         let okAction = UIAlertAction(title: "Ок", style: .default) { (action) in
             let alertTextField = alertController.textFields?.first
@@ -129,6 +101,46 @@ extension WorldWeatherViewController {
     }
 }
 
+// MARK: - TableViewDataSource
+extension WorldWeatherViewController {
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        weatherInCities.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cityWeatherCell") as! CityWeatherTableViewCell
+        cell.configure(for: weatherInCities[indexPath.item])
+        return cell
+    }
+}
+
+// MARK: - TableViewDelegate
+extension WorldWeatherViewController {
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        55
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "toWebView", sender: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") {
+            [weak self] (_, _, completionHandler) in
+            
+            guard let `self` = self else { return }
+            
+            self.weatherInCities.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+}
+
+// MARK: - Finding location
 extension WorldWeatherViewController {
     
     private func getCityCoordinates(

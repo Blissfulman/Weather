@@ -6,5 +6,6 @@ target 'Weather' do
   use_frameworks!
 
   pod 'SwiftSVG', '~> 2.0'
+  pod 'Alamofire', '~> 5.2'
 
 end

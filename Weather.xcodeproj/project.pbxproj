@@ -21,7 +21,7 @@
 		CE8AC2E72561012E00A4CE16 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2E62561012E00A4CE16 /* ForecastTableViewCell.swift */; };
 		CE8AC2EF256150AC00A4CE16 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2EE256150AC00A4CE16 /* WebViewController.swift */; };
 		CE8AC2F22561647100A4CE16 /* WorldWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2F12561647100A4CE16 /* WorldWeatherViewController.swift */; };
-		CE8AC2F62561661C00A4CE16 /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2F52561661C00A4CE16 /* Info.swift */; };
+		CE8AC2F62561661C00A4CE16 /* Fact.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC2F52561661C00A4CE16 /* Fact.swift */; };
 		CFEEF661899733542F556D2E /* Pods_Weather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06416790F4B5FE3F618CD89D /* Pods_Weather.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +45,7 @@
 		CE8AC2E62561012E00A4CE16 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 		CE8AC2EE256150AC00A4CE16 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		CE8AC2F12561647100A4CE16 /* WorldWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldWeatherViewController.swift; sourceTree = "<group>"; };
-		CE8AC2F52561661C00A4CE16 /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
+		CE8AC2F52561661C00A4CE16 /* Fact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8AC2DB25603BCE00A4CE16 /* Weather.swift */,
-				CE8AC2F52561661C00A4CE16 /* Info.swift */,
+				CE8AC2F52561661C00A4CE16 /* Fact.swift */,
 				CE720E68256190DE00D22DD1 /* Forecast.swift */,
 			);
 			path = Models;
@@ -286,7 +286,7 @@
 				CE720E6525618F9500D22DD1 /* Extension + Int.swift in Sources */,
 				CE8AC2E72561012E00A4CE16 /* ForecastTableViewCell.swift in Sources */,
 				CE8AC2D8256030F500A4CE16 /* NetworkManager.swift in Sources */,
-				CE8AC2F62561661C00A4CE16 /* Info.swift in Sources */,
+				CE8AC2F62561661C00A4CE16 /* Fact.swift in Sources */,
 				CE8AC2BD2560281700A4CE16 /* LocalWeatherViewController.swift in Sources */,
 				CE720E6C256198A000D22DD1 /* Extension + UIView.swift in Sources */,
 				CE720E622561871400D22DD1 /* CityWeatherTableViewCell.swift in Sources */,
