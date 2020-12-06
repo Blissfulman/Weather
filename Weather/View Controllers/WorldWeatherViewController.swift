@@ -126,18 +126,28 @@ extension WorldWeatherViewController {
         performSegue(withIdentifier: "toWebView", sender: nil)
     }
     
+    // Удаление ячейки
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") {
-            [weak self] (_, _, completionHandler) in
-            
+            [weak self] (_, _, _) in
+
             guard let `self` = self else { return }
-            
+
             self.weatherInCities.remove(at: indexPath.row)
-            tableView.reloadData()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
+    
+    // Ещё один вариант удаления ячейки
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        
+//        if editingStyle == .delete {
+//            weatherInCities.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .automatic)
+//        }
+//    }
 }
 
 // MARK: - Finding location

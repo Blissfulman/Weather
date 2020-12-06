@@ -13,7 +13,7 @@ struct NetworkManager {
     
     static let shared = NetworkManager()
     
-    private let apiKey = "93b85a8f-b038-47d6-992d-6dc194636caa"
+    private let apiKey = ""
     
     private init() {}
     
@@ -79,6 +79,7 @@ struct NetworkManager {
                 }
             }
         
+        // Вариант с ручным парсингом данных
 //            .responseJSON() { response in
 //                switch response.result {
 //                case let .success(jsonData):
