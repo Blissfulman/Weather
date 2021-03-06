@@ -1,5 +1,5 @@
 # Приложение Weather
-## Одна из домашних работ курса "iOS-разработчик с нуля за 20 недель" сайта [swiftbook.ru](https://www.online.swiftbook.ru).
+## Одна из домашних работ курса «iOS-разработчик с нуля за 20 недель» сайта [swiftbook.ru](https://www.online.swiftbook.ru).
 **Язык**: Swift.
 
 **Тема урока**: работа с сетью.
