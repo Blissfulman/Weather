@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class WebViewController: UIViewController {
+final class WebViewController: UIViewController {
 
     @IBOutlet var webView: WKWebView!
     
@@ -16,7 +16,6 @@ class WebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         webView.uiDelegate = self
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
@@ -30,6 +29,7 @@ class WebViewController: UIViewController {
 extension WebViewController: WKUIDelegate, WKNavigationDelegate {
     
     // MARK: - WKNavigationDelegate
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
         if let urlString = navigationAction.request.url?.absoluteString {

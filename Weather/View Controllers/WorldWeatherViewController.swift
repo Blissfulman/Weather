@@ -8,19 +8,21 @@
 import UIKit
 import CoreLocation
 
-class WorldWeatherViewController: UITableViewController {
+final class WorldWeatherViewController: UITableViewController {
     
     // MARK: - Properties
+    
     private let networkManager = NetworkManager.shared
     
     private var weatherInCities = [Weather]()
-    private let cityNames = ["Санкт-Петербург", "Сочи", "Владивосток", "Париж",
-                             "Лондон", "Милан", "Лиссабон", "Торонто", "Якутск"]
+    private let cityNames = [
+        "Санкт-Петербург", "Сочи", "Владивосток", "Париж", "Лондон", "Милан", "Лиссабон", "Торонто", "Якутск"
+    ]
     
     // MARK: - Lifecycle methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.setupViewGradient(
             withColors: [UIColor.systemTeal.cgColor, UIColor.systemGreen.cgColor],
             opacity: 0.2
@@ -30,6 +32,7 @@ class WorldWeatherViewController: UITableViewController {
     }
     
     // MARK: - Actions
+    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         addCityAlert { [weak self] sityName in
@@ -39,8 +42,8 @@ class WorldWeatherViewController: UITableViewController {
     }
     
     // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         let webVC = segue.destination as! WebViewController
         guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
         let weather = weatherInCities[selectedIndexPath.item]
@@ -52,19 +55,15 @@ class WorldWeatherViewController: UITableViewController {
     }
 
     // MARK: - Private methods
+    
     private func addCity(_ cityName: String) {
-        
-        getCityCoordinates(for: cityName) {
-            [weak self] (coordinates, error) in
-            
-            guard let `self` = self else { return }
-            
-            guard let coordinates = coordinates else { return }
+        getCityCoordinates(for: cityName) { [weak self] (coordinates, error) in
+            guard let `self` = self,
+                  let coordinates = coordinates else { return }
             
             self.networkManager.fetchWeatherDataAF(
                 latitude: String(coordinates.latitude),
-                longitude: String(coordinates.longitude)) {
-                (weather) in
+                longitude: String(coordinates.longitude)) { weather in
                 
                 self.weatherInCities.append(weather)
                 
@@ -76,7 +75,6 @@ class WorldWeatherViewController: UITableViewController {
     }
     
     private func addCityAlert(completionHandler: @escaping (String) -> Void) {
-        
         let alertController = UIAlertController(
             title: "Добавление города",
             message: "Введите название города, который необходимо добавить",
@@ -102,6 +100,7 @@ class WorldWeatherViewController: UITableViewController {
 }
 
 // MARK: - TableViewDataSource
+
 extension WorldWeatherViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,6 +115,7 @@ extension WorldWeatherViewController {
 }
 
 // MARK: - TableViewDelegate
+
 extension WorldWeatherViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -126,15 +126,13 @@ extension WorldWeatherViewController {
         performSegue(withIdentifier: "toWebView", sender: nil)
     }
     
-    // Удаление ячейки
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") {
-            [weak self] (_, _, _) in
-
-            guard let `self` = self else { return }
-
-            self.weatherInCities.remove(at: indexPath.row)
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (_, _, _) in
+            self?.weatherInCities.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
@@ -151,12 +149,12 @@ extension WorldWeatherViewController {
 }
 
 // MARK: - Finding location
+
 extension WorldWeatherViewController {
     
     private func getCityCoordinates(
         for city: String,
-        completionHandler: @escaping (_ coordinates: CLLocationCoordinate2D?,
-                                      _ error: Error?) -> Void
+        completionHandler: @escaping (_ coordinates: CLLocationCoordinate2D?,_ error: Error?) -> Void
     ) {
         CLGeocoder().geocodeAddressString(city) { (placemark, error) in
             completionHandler(placemark?.first?.location?.coordinate, error)

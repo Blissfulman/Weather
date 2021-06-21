@@ -7,9 +7,10 @@
 
 import UIKit
 
-class LocalWeatherViewController: UIViewController {
+final class LocalWeatherViewController: UIViewController {
 
-    // MARK: - Outlets    
+    // MARK: - Outlets
+    
     @IBOutlet var temperatureLabel: UILabel!
     @IBOutlet var conditionLabel: UILabel!
     @IBOutlet var feelsLikeLabel: UILabel!
@@ -22,22 +23,19 @@ class LocalWeatherViewController: UIViewController {
     @IBOutlet var forecastTableView: UITableView!
     
     // MARK: - Properties
+    
     private let networkManager = NetworkManager.shared
     
     private var weather: Weather!
     private var forecasts = [Forecast]()
     
     // MARK: - Lifecycle methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.setupViewGradient(
-            withColors: [UIColor.systemTeal.cgColor, UIColor.systemGreen.cgColor],
-            opacity: 0.2
-        )
+        view.setupViewGradient( withColors: [UIColor.systemTeal.cgColor, UIColor.systemGreen.cgColor], opacity: 0.2)
 
         networkManager.fetchWeatherDataAF { [weak self] weather in
-            
             guard let `self` = self else { return }
 
             DispatchQueue.main.async {
@@ -50,8 +48,8 @@ class LocalWeatherViewController: UIViewController {
     }
 
     // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         let webVC = segue.destination as! WebViewController
         webVC.url = weather.info?.url ?? ""
         webVC.title = weather.geoObject?.city?.name ?? ""
@@ -61,8 +59,8 @@ class LocalWeatherViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    
     private func updateLocalWeather() {
-        
         guard let fact = weather.fact else { return }
         
         title = weather.geoObject?.city?.name
@@ -75,10 +73,7 @@ class LocalWeatherViewController: UIViewController {
         airPressureLabel.text = "\(fact.pressureMm ?? 0) мм рт. ст."
         humidityLabel.text = "\(fact.humidity ?? 0)%"
 
-        networkManager.fetchConditionImage(fact.icon ?? "",
-                                           toSize: iconConditionView.bounds) {
-            [weak self] image in
-            
+        networkManager.fetchConditionImage(fact.icon ?? "", toSize: iconConditionView.bounds) { [weak self] image in
             guard let `self` = self else { return }
 
             self.iconConditionView.addSubview(image)
@@ -87,6 +82,7 @@ class LocalWeatherViewController: UIViewController {
 }
 
 // MARK: - TableViewDataSource
+
 extension LocalWeatherViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,6 +97,7 @@ extension LocalWeatherViewController: UITableViewDataSource {
 }
 
 // MARK: - TableViewDelegate
+
 extension LocalWeatherViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
