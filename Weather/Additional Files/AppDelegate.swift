@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Weather
 //
-//  Created by User on 14.11.2020.
+//  Created by Evgeny Novgorodov on 14.11.2020.
 //
 
 import UIKit

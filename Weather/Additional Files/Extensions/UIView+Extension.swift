@@ -1,8 +1,8 @@
 //
-//  Extension + UIView.swift
+//  UIView+Extension.swift
 //  Weather
 //
-//  Created by User on 15.11.2020.
+//  Created by Evgeny Novgorodov on 15.11.2020.
 //
 
 import UIKit

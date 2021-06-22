@@ -2,12 +2,13 @@
 //  Weather.swift
 //  Weather
 //
-//  Created by User on 14.11.2020.
+//  Created by Evgeny Novgorodov on 14.11.2020.
 //
 
 import Foundation
 
 // MARK: - Weather
+
 struct Weather: Decodable {
     let info: Info?
     let geoObject: GeoObject?
@@ -34,6 +35,7 @@ struct Weather: Decodable {
 }
 
 // MARK: - Info
+
 struct Info: Decodable {
     let n: Bool?
     let geoid: Int?
@@ -50,6 +52,7 @@ struct Info: Decodable {
 }
 
 // MARK: - GeoObject
+
 struct GeoObject: Decodable {
     let city: City?
     
@@ -63,6 +66,7 @@ struct GeoObject: Decodable {
 }
 
 // MARK: - City
+
 struct City: Decodable {
     let name: String?
     

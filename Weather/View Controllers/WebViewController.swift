@@ -2,17 +2,23 @@
 //  WebViewController.swift
 //  Weather
 //
-//  Created by User on 15.11.2020.
+//  Created by Evgeny Novgorodov on 15.11.2020.
 //
 
 import UIKit
 import WebKit
 
 final class WebViewController: UIViewController {
-
-    @IBOutlet var webView: WKWebView!
+    
+    // MARK: - Outlets
+    
+    @IBOutlet private var webView: WKWebView!
+    
+    // MARK: - Properties
     
     var url: String!
+    
+    // MARK: - Lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +32,9 @@ final class WebViewController: UIViewController {
     }
 }
 
+// MARK: - WKNavigationDelegate
+
 extension WebViewController: WKUIDelegate, WKNavigationDelegate {
-    
-    // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         

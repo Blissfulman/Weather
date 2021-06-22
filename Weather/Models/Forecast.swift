@@ -2,10 +2,11 @@
 //  Forecast.swift
 //  Weather
 //
-//  Created by User on 15.11.2020.
+//  Created by Evgeny Novgorodov on 15.11.2020.
 //
 
 // MARK: - Forecast
+
 struct Forecast: Decodable {
     let date: String?
     let parts: Parts?
@@ -17,6 +18,7 @@ struct Forecast: Decodable {
 }
 
 // MARK: - Parts
+
 struct Parts: Decodable {
     let nightShort, dayShort: ShortInfo?
 
@@ -32,6 +34,7 @@ struct Parts: Decodable {
 }
 
 // MARK: - ShortInfo
+
 struct ShortInfo: Decodable {
     let temp: Int?
     let icon: String?

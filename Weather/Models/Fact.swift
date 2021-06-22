@@ -2,12 +2,13 @@
 //  CityWeather.swift
 //  Weather
 //
-//  Created by User on 15.11.2020.
+//  Created by Evgeny Novgorodov on 15.11.2020.
 //
 
 import Foundation
 
 // MARK: - Fact
+
 struct Fact: Decodable {
     let temp: Int?
     let feelsLike: Int?
@@ -48,6 +49,7 @@ struct Fact: Decodable {
 }
 
 // MARK: - Condition
+
 enum Condition: String, Decodable {
     case clear = "clear"
     case partlyCloudy = "partly-cloudy"
@@ -99,6 +101,7 @@ enum Condition: String, Decodable {
 }
 
 // MARK: - WindDirection
+
 enum WindDirection: String, Decodable {
     case nw
     case n
@@ -130,6 +133,7 @@ enum WindDirection: String, Decodable {
 }
 
 // MARK: - Season
+
 enum Season: String, Decodable {
     case summer
     case autumn

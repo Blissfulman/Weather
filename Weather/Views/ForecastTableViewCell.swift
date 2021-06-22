@@ -2,27 +2,28 @@
 //  ForecastTableViewCell.swift
 //  Weather
 //
-//  Created by User on 15.11.2020.
+//  Created by Evgeny Novgorodov on 15.11.2020.
 //
 
 import UIKit
 
-class ForecastTableViewCell: UITableViewCell {
+final class ForecastTableViewCell: UITableViewCell {
 
     // MARK: - Outlets
-    @IBOutlet var dateLabel: UILabel!
-    @IBOutlet var weekdayLabel: UILabel!
-    @IBOutlet var dayTemperatureLabel: UILabel!
-    @IBOutlet var nightTemperatureLabel: UILabel!
-
-    @IBOutlet var iconConditionView: UIView!
+    
+    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet private var weekdayLabel: UILabel!
+    @IBOutlet private var dayTemperatureLabel: UILabel!
+    @IBOutlet private var nightTemperatureLabel: UILabel!
+    @IBOutlet private var iconConditionView: UIView!
 
     // MARK: - Properties
+    
     private let networkManager = NetworkManager.shared
     
-    // MARK: - Setup UI
+    // MARK: - Public methods
+    
     func configure(for forecast: Forecast) {
-        
         if let date = getDateFromString(forecast.date) {
             dateLabel.text = getStringFromDate(date)
             weekdayLabel.text = getWeekdayDate(date)
@@ -32,19 +33,17 @@ class ForecastTableViewCell: UITableViewCell {
         dayTemperatureLabel.text = "\(forecast.parts?.dayShort?.temp?.withSign() ?? "")°"
         nightTemperatureLabel.text = "\(forecast.parts?.nightShort?.temp?.withSign() ?? "")°"
         
-        networkManager.fetchConditionImage(forecast.parts?.dayShort?.icon ?? "",
-                                           toSize: iconConditionView.bounds) {
-            [weak self] image in
-            
-            guard let `self` = self else { return }
-
-            self.iconConditionView.addSubview(image)
+        networkManager.fetchConditionImage(
+            forecast.parts?.dayShort?.icon ?? "",
+            toSize: iconConditionView.bounds
+        ) { [weak self] image in
+            self?.iconConditionView.addSubview(image)
         }
     }
     
     // MARK: - Private methods
+    
     private func getDateFromString(_ stringDate: String?) -> Date? {
-        
         guard let stringDate = stringDate else { return nil }
         
         let dateFormatter = DateFormatter()
@@ -75,7 +74,6 @@ class ForecastTableViewCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ru_RU")
         dateFormatter.dateFormat = "e"
-        return dateFormatter.string(from: date) == "6"
-            || dateFormatter.string(from: date) == "7"
+        return dateFormatter.string(from: date) == "6" || dateFormatter.string(from: date) == "7"
     }
 }

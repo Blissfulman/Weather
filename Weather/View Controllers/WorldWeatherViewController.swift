@@ -2,7 +2,7 @@
 //  WorldWeatherViewController.swift
 //  Weather
 //
-//  Created by User on 15.11.2020.
+//  Created by Evgeny Novgorodov on 15.11.2020.
 //
 
 import UIKit
@@ -13,7 +13,6 @@ final class WorldWeatherViewController: UITableViewController {
     // MARK: - Properties
     
     private let networkManager = NetworkManager.shared
-    
     private var weatherInCities = [Weather]()
     private let cityNames = [
         "Санкт-Петербург", "Сочи", "Владивосток", "Париж", "Лондон", "Милан", "Лиссабон", "Торонто", "Якутск"
@@ -27,14 +26,12 @@ final class WorldWeatherViewController: UITableViewController {
             withColors: [UIColor.systemTeal.cgColor, UIColor.systemGreen.cgColor],
             opacity: 0.2
         )
-        
         cityNames.forEach { addCity($0) }
     }
     
     // MARK: - Actions
     
-    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        
+    @IBAction private func addButtonPressed(_ sender: UIBarButtonItem) {
         addCityAlert { [weak self] sityName in
             guard let `self` = self else { return }
             self.addCity(sityName)

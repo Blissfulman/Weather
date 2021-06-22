@@ -2,7 +2,7 @@
 //  WeatherRequest.swift
 //  Weather
 //
-//  Created by User on 14.11.2020.
+//  Created by Evgeny Novgorodov on 14.11.2020.
 //
 
 import UIKit
@@ -11,16 +11,25 @@ import SwiftSVG
 
 struct NetworkManager {
     
+    // MARK: - Static properties
+    
     static let shared = NetworkManager()
+    
+    // MARK: - Properties
     
     private let apiKey = ""
     
+    // MARK: - Initializers
+    
     private init() {}
     
-    func fetchWeatherData(latitude: String = "",
-                          longitude: String = "",
-                          completionHandler: @escaping (Weather) -> Void) {
-        
+    // MARK: - Pubilc methods
+    
+    func fetchWeatherData(
+        latitude: String = "",
+        longitude: String = "",
+        completionHandler: @escaping (Weather) -> Void
+    ) {
         let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
         let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
 
@@ -44,10 +53,6 @@ struct NetworkManager {
             
             guard let data = data else { return }
             
-//            if let string = String(data: data, encoding: .utf8) {
-//                print(string)
-//            }
-            
             do {
                 let weather = try JSONDecoder().decode(Weather.self, from: data)
                 completionHandler(weather)
@@ -58,10 +63,11 @@ struct NetworkManager {
         }.resume()
     }
     
-    func fetchWeatherDataAF(latitude: String = "",
-                            longitude: String = "",
-                            completionHandler: @escaping (Weather) -> Void) {
-        
+    func fetchWeatherDataAF(
+        latitude: String = "",
+        longitude: String = "",
+        completionHandler: @escaping (Weather) -> Void
+    ) {
         let latitudeString = latitude != "" ? "lat=\(latitude)&" : ""
         let longitudeString = longitude != "" ? "lon=\(longitude)&" : ""
 
@@ -99,10 +105,14 @@ struct NetworkManager {
         let stringImageURL = "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg"
         guard let imageURL = URL(string: stringImageURL) else { return }
         let conditionImage = UIView(SVGURL: imageURL) { image in
-            image.resizeToFit(CGRect(x: size.origin.x,
-                                     y: size.origin.y,
-                                     width: size.width * 0.85,
-                                     height: size.height * 0.85))
+            image.resizeToFit(
+                CGRect(
+                    x: size.origin.x,
+                    y: size.origin.y,
+                    width: size.width * 0.85,
+                    height: size.height * 0.85
+                )
+            )
         }
         completionHandler(conditionImage)
     }

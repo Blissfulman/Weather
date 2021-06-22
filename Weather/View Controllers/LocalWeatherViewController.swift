@@ -2,7 +2,7 @@
 //  LocalWeatherViewController.swift
 //  Weather
 //
-//  Created by User on 14.11.2020.
+//  Created by Evgeny Novgorodov on 14.11.2020.
 //
 
 import UIKit
@@ -11,21 +11,18 @@ final class LocalWeatherViewController: UIViewController {
 
     // MARK: - Outlets
     
-    @IBOutlet var temperatureLabel: UILabel!
-    @IBOutlet var conditionLabel: UILabel!
-    @IBOutlet var feelsLikeLabel: UILabel!
-    @IBOutlet var windLabel: UILabel!
-    @IBOutlet var airPressureLabel: UILabel!
-    @IBOutlet var humidityLabel: UILabel!
-    
-    @IBOutlet var iconConditionView: UIView!
-    
-    @IBOutlet var forecastTableView: UITableView!
+    @IBOutlet private var temperatureLabel: UILabel!
+    @IBOutlet private var conditionLabel: UILabel!
+    @IBOutlet private var feelsLikeLabel: UILabel!
+    @IBOutlet private var windLabel: UILabel!
+    @IBOutlet private var airPressureLabel: UILabel!
+    @IBOutlet private var humidityLabel: UILabel!
+    @IBOutlet private var iconConditionView: UIView!
+    @IBOutlet private var forecastTableView: UITableView!
     
     // MARK: - Properties
     
     private let networkManager = NetworkManager.shared
-    
     private var weather: Weather!
     private var forecasts = [Forecast]()
     
@@ -36,13 +33,11 @@ final class LocalWeatherViewController: UIViewController {
         view.setupViewGradient( withColors: [UIColor.systemTeal.cgColor, UIColor.systemGreen.cgColor], opacity: 0.2)
 
         networkManager.fetchWeatherDataAF { [weak self] weather in
-            guard let `self` = self else { return }
-
             DispatchQueue.main.async {
-                self.weather = weather
-                self.updateLocalWeather()
-                self.forecasts = weather.forecasts ?? []
-                self.forecastTableView.reloadData()
+                self?.weather = weather
+                self?.updateLocalWeather()
+                self?.forecasts = weather.forecasts ?? []
+                self?.forecastTableView.reloadData()
             }
         }
     }
@@ -74,9 +69,7 @@ final class LocalWeatherViewController: UIViewController {
         humidityLabel.text = "\(fact.humidity ?? 0)%"
 
         networkManager.fetchConditionImage(fact.icon ?? "", toSize: iconConditionView.bounds) { [weak self] image in
-            guard let `self` = self else { return }
-
-            self.iconConditionView.addSubview(image)
+            self?.iconConditionView.addSubview(image)
         }
     }
 }
